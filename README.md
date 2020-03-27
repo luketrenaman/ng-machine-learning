@@ -1,2 +1,2 @@
 # ng-machine-learning
-Exercises for the Andrew Ng Machine Learning course. https://www.coursera.org/learn/machine-learning
+Programming exercises for Andrew Ng's Machine Learning course on Coursera. https://www.coursera.org/learn/machine-learning
