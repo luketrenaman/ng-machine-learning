@@ -62,23 +62,38 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+a1 = [ones(size(X,1),1) X];
+z2 = a1 * Theta1';
+a2 = [ones(size(z2,1),1) sigmoid(z2)];
+z3 = a2 * Theta2';
+a3 = sigmoid(z3);
+for i = 1:m
+  for k = 1:num_labels
+    onehot = eye(num_labels)(:,y(i));
+    J += -onehot(k).*log(a3(i,k))-(1-onehot(k)).*log(1-a3(i,k));
+  endfor
+endfor
+J *= 1/m;
+reg = 0;
+for j = 1:hidden_layer_size
+  for k = 2:input_layer_size+1 #remove bias unit
+    reg += Theta1(j,k)^2;
+  endfor
+endfor
+for j = 1:num_labels
+  for k = 2:hidden_layer_size+1 #remove bias unit
+    reg += Theta2(j,k)^2;
+  endfor
+endfor
+reg *= lambda/(2*m);
+J += reg;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+y_matrix = eye(num_labels)(y,:);
+delta3 = a3 - y_matrix;
+delta2 = delta3 * Theta2;
+delta2 = delta2(:,2:end) .*sigmoidGradient(z2);
+Theta2_grad = (delta3' * a2) / m;
+Theta1_grad = (delta2' * a1) / m;
 
 % -------------------------------------------------------------
 
